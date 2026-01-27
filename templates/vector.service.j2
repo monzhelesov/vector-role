@@ -1,0 +1,11 @@
+[Unit]
+Description=Vector
+After=network.target
+
+[Service]
+ExecStart={{ vector_bin_path }} --config {{ vector_dir }}/vector.toml
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
