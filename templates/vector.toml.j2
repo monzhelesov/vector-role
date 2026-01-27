@@ -1,0 +1,10 @@
+[sources.demo_logs]
+type = "demo_logs"
+format = "apache_common"
+
+[sinks.clickhouse]
+type = "clickhouse"
+inputs = ["demo_logs"]
+endpoint = "http://localhost:8123"
+database = "logs"
+table = "vector_logs"
