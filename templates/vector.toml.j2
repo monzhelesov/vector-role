@@ -1,0 +1,9 @@
+[sources.demo]
+type = "demo_logs"
+format = "json"
+
+[sinks.clickhouse_http]
+type = "http"
+inputs = ["demo"]
+uri = "http://localhost:8123/?query=INSERT%20INTO%20logs.vector_logs%20FORMAT%20JSONEachRow"
+encoding.codec = "json"
