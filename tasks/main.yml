@@ -24,14 +24,12 @@
     src: vector.toml.j2
     dest: "{{ vector_dir }}/vector.toml"
     mode: '0644'
-  notify: Restart vector
 
 - name: Install systemd unit
   ansible.builtin.template:
     src: vector.service.j2
     dest: /etc/systemd/system/vector.service
     mode: '0644'
-  notify: Restart vector
 
 - name: Enable and start vector
   ansible.builtin.systemd:
@@ -39,3 +37,4 @@
     enabled: true
     state: started
     daemon_reload: true
+  when: ansible_virtualization_type != "docker"

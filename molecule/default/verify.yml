@@ -1,0 +1,33 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  vars:
+    vector_dir: /opt/vector
+  tasks:
+    - name: Check Vector binary exists
+      ansible.builtin.stat:
+        path: "{{ vector_dir }}/vector-x86_64-unknown-linux-gnu/bin/vector"
+      register: vector_bin
+      failed_when: not vector_bin.stat.exists
+
+    - name: Check Vector config exists
+      ansible.builtin.stat:
+        path: "{{ vector_dir }}/vector.toml"
+      register: vector_conf
+      failed_when: not vector_conf.stat.exists
+
+    - name: Check Vector service file exists
+      ansible.builtin.stat:
+        path: /etc/systemd/system/vector.service
+      register: vector_service_file
+      failed_when: not vector_service_file.stat.exists
+
+    #- name: Validate Vector config
+    #  ansible.builtin.command: "{{ vector_dir }}/vector-x86_64-unknown-linux-gnu/bin/vector validate {{ vector_dir }}/vector.toml"
+    #  changed_when: false
+    #  register: vector_validate
+
+    #- name: Show validation result
+    #  ansible.builtin.debug:
+    #    msg: "Vector config is valid: {{ vector_validate.stdout }}"

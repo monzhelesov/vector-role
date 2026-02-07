@@ -1,6 +1,13 @@
-#SPDX-License-Identifier: MIT-0
 ---
 - name: Restart vector
   ansible.builtin.service:
     name: vector
     state: restarted
+  when: ansible_virtualization_type != "docker"
+
+- name: Restart vector in docker
+  ansible.builtin.shell: |
+    pkill -f vector || true
+    nohup /opt/vector/bin/vector --config /opt/vector/vector.toml > /var/log/vector.log 2>&1 &
+  when: ansible_virtualization_type == "docker"
+  listen: "Restart vector"
