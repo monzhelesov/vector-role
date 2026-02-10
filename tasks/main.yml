@@ -31,10 +31,15 @@
     dest: /etc/systemd/system/vector.service
     mode: '0644'
 
+- name: Check if systemctl is available
+  ansible.builtin.command: which systemctl
+  register: systemctl_check
+  ignore_errors: true
+  changed_when: false
+
 - name: Enable and start vector
   ansible.builtin.systemd:
     name: vector
     enabled: true
     state: started
-    daemon_reload: true
-  when: ansible_virtualization_type != "docker"
+  when: systemctl_check.rc == 0
